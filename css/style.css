@@ -68,4 +68,55 @@ body {
     border-radius: 100%;
     display: grid;
     place-content: center;
+    
+  }
+
+  input[type="checkbox"]::before {
+    content: url("/images/check-mark.png");
+    transform: scale(0);
+    transition: .2s ease-in-out;
+  }
+
+  input[type="checkbox"]:checked {
+    background-color: transparent;
+    border-color: black;
+  }
+
+  input[type="checkbox"]:checked::before {
+    transform: scale(0.03);
+  }
+
+  #deleteBtn {
+    border: 0;
+    padding: 0.25rem;
+    display: grid;
+    place-content: center;
+    background-color: transparent;
+  }
+
+  #deleteBtn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  #deleteBtn svg path {
+    transition: .2s ease-in-out;
+  }
+
+  #deleteBtn:hover svg path {
+    stroke: white;
+  }
+
+  span {
+    padding: 2px;
+    transition: .2s ease-in-out;
+  }
+
+  span:focus {
+    background-color: aliceblue;
+    outline: none;
+  }
+
+  span[contenteditable]:hover {
+    background-color: aliceblue;
   }
