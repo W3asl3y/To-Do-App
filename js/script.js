@@ -1,50 +1,152 @@
-// Get elements
+// DOM elements
+const inputForm = document.getElementById("inputForm");
 const taskInput = document.getElementById("taskInput");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const taskList = document.getElementById("taskList");
 
-// // Displaying an alert message once when the website is launched
-// window.alert("Welcome to your To-Do app! \n\n This is how the to-do app works: \n To mark that a task is complete click once on the task \n To delete a task double click on the task") 
 
-  
 
 // An array for all the tasks
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+// Rendering tasks when page is refreshed
+if (localStorage.getItem("tasks")) {
+  tasks.map((task) => {
+    addTask(task)
+  })
+}
+
+
+// Event Listeners
+inputForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const taskValue = taskInput.value;
+ 
+  const task = {
+    id: new Date().getTime(),
+    name: taskValue,
+    isCompleted: false
+  }
+
+  console.log(task);
+
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  addTask(task)
+
+  inputForm.reset()
+  taskInput.focus()
+  }) 
+
+
+taskList.addEventListener('click', (e) => {
+  if (e.target.classList.contains("deleteBtn") || e.target.parentElement.classList.contains("deleteBtn") || e.target.parentElement.parentElement.classList.contains("deleteBtn")) {
+    const taskId = e.target.closest("li").id
+
+    deleteTask(taskId)
+  }
+})
+
+
+taskList.addEventListener('input', (e) => {
+  const taskId = e.target.closest("li").id
+
+  editTask(taskId, e.target)
+})
+
+
+taskList.addEventListener('keydown', (e) => {
+  if (e.keyCode === 13) {
+    e.preventDefault()
+
+    e.target.blur()
+  }
+})
+
 
 // Adding a new task
-function addTask(e) {
-  e.preventDefault();
-  const task = taskInput.value;
-  if (task) {
-    const li = document.createElement("li");
-    li.innerText = task;
-    taskList.appendChild(li);
-    taskInput.value = "";
+function addTask(task) {
+  const taskEle = document.createElement("li");
 
-    console.log(tasks);
+  taskEle.setAttribute("id", task.id)
+
+  if (task.isCompleted) {
+    taskEle.classList.add("completed");
   }
+
+  const taskEleTemplate = `
+      <div>
+        <input type="checkbox" name="tasks" id="${task.id}" ${task.isCompleted ? 'checked' : ''}>
+        <span ${!task.isCompleted ? 'contenteditable' : '' }> ${task.name} </span>
+      </div>
+      <button title="Delete the "${task.name}" task" class="deleteBtn">
+        <svg viewbox="0 0 24 24" fill="none">
+          <path d="M17.25 17.25L6.75 6.75" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M17.25 6.75L6.75 17.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    `
+
+    taskEle.innerHTML = taskEleTemplate
+
+    taskList.appendChild(taskEle)
 }
-      
+
 
 // Deleting a task
-  function deleteTask(e) {
-    if (e.target.tagName === "LI") {
-      e.target.remove();
+function deleteTask(taskId) {
+  tasks = tasks.filter((task) => task.id !== parseInt(taskId))
+
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  document.getElementById("taskId").remove()
+}
+
+
+// Editing a task and marking it as complete
+function editTask(taskId, el) {
+  const task = tasks.find((task) => task.id === parseInt(taskId))
+
+  if (el.hasAttribute('contenteditable')) {
+    task.name = el.textContent
+  }
+  else {
+    const span = el.nextElementSibling
+    const parent = el.closest('li')
+
+    task.isCompleted = !task.isCompleted
+
+    if (task.isCompleted) {
+      span.removeAttribute('contenteditable')
+      parent.classList.add('completed') 
+    }
+    else {
+      span.setAttribute('contenteditable', true)
+      parent.classList.remove('completed')
     }
   }
 
-// Mark task as done
-function markDone(e) {
-  if (e.target.tagName === "LI") {
-    e.target.classList.toggle("done");
-  }
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 
-// Event listeners
-addTaskBtn.addEventListener("click", addTask);
-taskList.addEventListener("dblclick", deleteTask);
-taskList.addEventListener("click", markDone);
+
+
+
+// // Mark task as done
+// function markDone(e) {
+//   if (e.target.tagName === "LI") {
+//     e.target.classList.toggle("done");
+//   }
+// }
+
+
+// // Event listeners
+
+// taskList.addEventListener("dblclick", deleteTask);
+// taskList.addEventListener("click", markDone);
 
 
 

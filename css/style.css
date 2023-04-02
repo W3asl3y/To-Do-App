@@ -86,7 +86,7 @@ body {
     transform: scale(0.03);
   }
 
-  #deleteBtn {
+  .deleteBtn {
     border: 0;
     padding: 0.25rem;
     display: grid;
@@ -94,16 +94,16 @@ body {
     background-color: transparent;
   }
 
-  #deleteBtn svg {
+  .deleteBtn svg {
     width: 1.5rem;
     height: 1.5rem;
   }
 
-  #deleteBtn svg path {
+  .deleteBtn svg path {
     transition: .2s ease-in-out;
   }
 
-  #deleteBtn:hover svg path {
+  .deleteBtn:hover svg path {
     stroke: white;
   }
 
