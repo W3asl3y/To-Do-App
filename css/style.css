@@ -2,6 +2,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-image: url("/images/calm_environment.png");
+    background-color: purple;
   }
   
   .container {
@@ -26,8 +27,8 @@ body {
   
   form button {
     padding: 10px;
-    background-color: #4caf50;
-    color: white;
+    background-color: cyan;
+    color: black;
     border: none;
     border-radius: 0 5px 5px 0;
     cursor: pointer;
@@ -39,17 +40,32 @@ body {
   }
   
   li {
-    padding: 10px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ddd;
+    margin: 1rem;
+    padding: 1.5rem 1rem;
+    background-color: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  
-  li:last-child {
-    border-bottom: none;
+
+  #taskList li div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
-  
-  li.done {
+
+  #completedTask {
     text-decoration: line-through;
-    opacity: 0.5;
   }
-  
+
+  input[type="checkbox"] {
+    appearance: none;
+    background-color: transparent;
+    margin: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid black;
+    border-radius: 100%;
+    display: grid;
+    place-content: center;
+  }
